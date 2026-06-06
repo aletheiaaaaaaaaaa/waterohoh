@@ -297,13 +297,13 @@ h2 {
 }
 
 .back-btn {
-    position: absolute;
+    position: fixed;      /* ✅ */
     top: 2rem;
     left: 2rem;
     cursor: pointer;
-    width: 150px; /* Made it significantly larger */
+    width: 150px;
     transition: transform 0.2s ease, filter 0.2s ease;
-    z-index: 50; /* Ensure it's always on top */
+    z-index: 9999;        /* ✅ */
 }
 
 .back-btn:hover {
