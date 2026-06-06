@@ -344,7 +344,7 @@ h2 {
 
 .into-btn {
     position: fixed;
-    bottom: 20vh;
+    bottom: 18vh;
     left: 80%;
     transform: translateX(-50%);
     cursor: pointer;
