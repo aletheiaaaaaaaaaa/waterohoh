@@ -304,6 +304,7 @@ h2 {
     width: 150px;
     transition: transform 0.2s ease, filter 0.2s ease;
     z-index: 9999;
+    touch-action: manipulation;
 }
 
 .back-btn:hover {
@@ -315,17 +316,26 @@ h2 {
     transform: scale(0.9);
 }
 
+/* Layer 2 override：不要 flex 置中，讓子元素自己定位 */
+#layer2 {
+    display: block;
+    overflow: hidden;
+}
+
 .map-island {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -35%);
     height: 100vh;
     width: auto;
     max-width: none;
     object-fit: contain;
     z-index: 10;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-    margin-top: 15vh;
     cursor: pointer;
     transition: filter 0.2s ease;
-    touch-action: manipulation; /* 平板觸控優化 */
+    touch-action: manipulation;
 }
 
 .map-island:hover {
