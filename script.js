@@ -108,7 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnInto = document.getElementById('btn-into');
     
     if (mapIsland) {
-        mapIsland.addEventListener('click', () => {
+        // 同時支援 click 和 touchstart，避免平板 300ms 延遲
+        function handleMapIslandClick(e) {
+            e.preventDefault();
             // Change background
             document.body.style.backgroundImage = "url('pic/sur/chooset.png')";
             // Hide map island
@@ -117,19 +119,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btnInto) {
                 btnInto.style.display = 'block';
             }
-        });
+        }
+        mapIsland.addEventListener('click', handleMapIslandClick);
+        mapIsland.addEventListener('touchstart', handleMapIslandClick, { passive: false });
     }
 
     if (btnInto) {
-        btnInto.addEventListener('click', () => {
+        function handleIntoClick(e) {
+            e.preventDefault();
             // Navigate to game screen
-            // Provide a default background for layer 3 since level cards are gone
             const gameBg = document.getElementById('game-bg');
             if (gameBg && !gameBg.src.includes('pic/place/pw')) {
                 gameBg.src = 'pic/place/pw1.png'; 
             }
             showScreen(layer3);
             startGameTimer();
-        });
+        }
+        btnInto.addEventListener('click', handleIntoClick);
+        btnInto.addEventListener('touchstart', handleIntoClick, { passive: false });
     }
 });
