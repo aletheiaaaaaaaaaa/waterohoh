@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Background Slideshow -->
+    <div id="main-bg-slideshow">
+        <div class="bg-slide active" style="background-image: url('pic/sur/m1.png');"></div>
+        <div class="bg-slide" style="background-image: url('pic/sur/m2.png');"></div>
+    </div>
+
+    <!-- Layer 1: Title Screen -->
+    <div id="layer1" class="screen active">
+        <img src="pic/item/start.png" id="btn-start" alt="Start Game" class="image-btn">
+    </div>
+
+    <!-- Layer 2: Level Selection Screen -->
+    <div id="layer2" class="screen">
+        <div class="glass-panel wide">
+            <h2>選擇關卡</h2>
+            <div class="level-grid">
+                <div class="level-card" data-level="1">
+                    <img src="pic/place/pw1.png" alt="Level 1">
+                    <h3>關卡 1</h3>
+                </div>
+                <div class="level-card" data-level="2">
+                    <img src="pic/place/pw2.png" alt="Level 2">
+                    <h3>關卡 2</h3>
+                </div>
+                <div class="level-card" data-level="3">
+                    <img src="pic/place/pw3.png" alt="Level 3">
+                    <h3>關卡 3</h3>
+                </div>
+                <div class="level-card" data-level="4">
+                    <img src="pic/place/pw4.png" alt="Level 4">
+                    <h3>關卡 4</h3>
+                </div>
+            </div>
+            <button id="btn-back-to-title" class="btn secondary-btn">返回標題</button>
+        </div>
+    </div>
+
+    <!-- Layer 3: Game Screen -->
+    <div id="layer3" class="screen">
+        <div id="game-container">
+            <img id="game-bg" src="" alt="Game Background">
+            <img id="game-char" src="pic/man/m1.png" alt="Character">
+            
+            <!-- Game UI Overlays -->
+            <div class="game-ui-top">
+                <button id="btn-back-to-levels" class="btn icon-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    返回
+                </button>
+                <div class="timer-display">時間: <span id="game-timer">300</span>s</div>
+                <div class="level-info">Level <span id="current-level-display">1</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
