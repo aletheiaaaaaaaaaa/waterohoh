@@ -297,13 +297,13 @@ h2 {
 }
 
 .back-btn {
-    position: fixed;      /* ✅ */
+    position: absolute;
     top: 2rem;
     left: 2rem;
     cursor: pointer;
     width: 150px;
     transition: transform 0.2s ease, filter 0.2s ease;
-    z-index: 9999;        /* ✅ */
+    z-index: 9999;
 }
 
 .back-btn:hover {
@@ -316,15 +316,16 @@ h2 {
 }
 
 .map-island {
-    height: 120vh; /* Enlarged beyond viewport */
+    height: 100vh;
     width: auto;
-    max-width: none; /* Remove any max-width constraints */
+    max-width: none;
     object-fit: contain;
     z-index: 10;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-    transform: translateY(15vh); /* Shifted down */
+    margin-top: 15vh;
     cursor: pointer;
     transition: filter 0.2s ease;
+    touch-action: manipulation; /* 平板觸控優化 */
 }
 
 .map-island:hover {
@@ -332,14 +333,15 @@ h2 {
 }
 
 .into-btn {
-    position: fixed; /* Relative to browser window as requested */
+    position: fixed;
     bottom: 15vh;
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
     width: 200px;
-    z-index: 100; /* Ensure it stays on top */
+    z-index: 100;
     transition: transform 0.2s ease, filter 0.2s ease;
+    touch-action: manipulation; /* 平板觸控優化 */
 }
 
 .into-btn:hover {
