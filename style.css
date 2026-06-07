@@ -253,7 +253,7 @@ h2 {
     position: absolute;
     top: 4vmin;
     right: 4vmin;
-    width: 280px;
+    width: 30vmin;        /* 隨視窗縮放 */
     z-index: 100;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
     display: flex;
@@ -263,11 +263,11 @@ h2 {
 
 .clock-canvas {
     position: absolute;
-    left: 8px;
+    left: 2.2vmin;
     top: 50%;
     transform: translateY(-50%);
-    width: 62px;
-    height: 62px;
+    width: 7vmin;         /* 隨視窗縮放 */
+    height: 7vmin;
     z-index: 101;
     border-radius: 50%;
 }
@@ -291,7 +291,7 @@ h2 {
 }
 
 #game-month {
-    font-size: 1.6rem;
+    font-size: 2vmin;
     font-weight: 900;
     line-height: 1;
     margin-bottom: 0.2rem;
@@ -299,7 +299,7 @@ h2 {
 }
 
 #game-timer {
-    font-size: 2rem;
+    font-size: 2.6vmin;
     font-weight: 900;
     line-height: 1;
     letter-spacing: 1px;
@@ -522,4 +522,60 @@ h2 {
 
 .return-btn:active {
     transform: translateX(-50%) scale(0.95);
+}
+
+/* Layer 3 Info Panel (i.png) - fixed top-left */
+.info-panel-wrapper {
+    position: absolute;
+    top: 4vmin;
+    left: 4vmin;
+    width: 28vmin;        /* 隨視窗等比縮放，i.png 約正方形 */
+    z-index: 10000;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+}
+
+.info-panel-img {
+    width: 100%;
+    display: block;
+}
+
+/* v% — 大號百分比，位於橘色bar下方左側 */
+.info-v-pct {
+    position: absolute;
+    top: 27%;
+    left: 10%;
+    font-size: 2.8vmin;
+    font-weight: 900;
+    color: #5a3a1a;
+    line-height: 1;
+}
+
+/* 淤積量數值 — 水庫淤積量那行右側 */
+.info-silt {
+    position: absolute;
+    top: 61%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
+}
+
+/* 月降雨量數值 */
+.info-rain {
+    position: absolute;
+    top: 73%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
+}
+
+/* 月用水量數值 */
+.info-usage {
+    position: absolute;
+    top: 85%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
 }
