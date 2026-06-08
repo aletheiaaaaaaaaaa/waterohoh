@@ -1,0 +1,964 @@
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --text-light: #f8fafc;
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --transition-speed: 0.4s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #0f172a; /* Fallback */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+#main-bg-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Below the screens (z-index: 10) */
+}
+
+.bg-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.bg-slide.active {
+    opacity: 1;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+    transform: scale(0.95);
+    z-index: 10;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    z-index: 20;
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem 4rem;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.glass-panel.wide {
+    padding: 3rem;
+    max-width: 900px;
+    width: 90%;
+}
+
+.game-title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #a855f7, #6366f1, #3b82f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+/* Buttons */
+.btn {
+    font-family: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    box-shadow: 0 10px 20px -10px var(--primary-color);
+}
+
+.primary-btn:hover {
+    box-shadow: 0 15px 25px -10px var(--primary-color), inset 0 0 0 2px rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 2rem;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-btn {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.image-btn {
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    margin-top: 15vh; /* Push it down a bit to match reference image */
+    max-width: 250px;
+}
+
+.image-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.image-btn:active {
+    transform: scale(0.95);
+}
+
+/* Level Grid */
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.level-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 1rem;
+    cursor: pointer;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.level-card img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.level-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.level-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.level-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Layer 3: Game Screen */
+#layer3 {
+    background-color: black; /* Solid black base behind the game background */
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Layer 3 Frame Overlay */
+.frame-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Let clicks pass through to game UI */
+    z-index: 9999; /* Ensure it stays above everything else in Layer 3 */
+    border: 8vmin solid transparent; /* Responsive frame thickness, increased */
+    border-image: url('pic/item/bb.png') 15% stretch;
+}
+
+.time-container {
+    position: absolute;
+    top: 4vmin;
+    right: -1vmin;        /* 稍微往右 */
+    width: 30vmin;        /* 隨視窗縮放 */
+    z-index: 100;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.clock-canvas {
+    position: absolute;
+    left: 2.2vmin;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 7vmin;         /* 隨視窗縮放 */
+    height: 7vmin;
+    z-index: 101;
+    border-radius: 50%;
+}
+
+.time-bg {
+    width: 100%;
+    display: block;
+}
+
+.time-text-wrapper {
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: #6d4c41; /* Dark brown color */
+}
+
+#game-month {
+    font-size: 2.6vmin;   /* 稍微放大月份字體 */
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    letter-spacing: 1px;
+}
+
+#game-timer {
+    font-size: 2.6vmin;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+
+#game-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+#game-char {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 40vh; /* Adjust based on character aspect ratio */
+    object-fit: contain;
+    z-index: 5;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+    100% { transform: translateX(-50%) translateY(0); }
+}
+
+.game-ui-top {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.timer-display {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    color: #fca5a5;
+}
+
+.level-info {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+}
+
+.back-btn {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    cursor: pointer;
+    width: 150px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    z-index: 9999;
+    touch-action: manipulation;
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.back-btn:active {
+    transform: scale(0.9);
+}
+
+/* Layer 2 override：不要 flex 置中，讓子元素自己定位 */
+#layer2 {
+    display: block;
+    overflow: hidden;
+    position: relative; /* 讓絕對定位子元素正確對齊 */
+}
+
+.map-island {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+    height: 100vh;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    z-index: 10000; /* 高於 back-btn 的 9999 */
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    cursor: pointer;
+    transition: filter 0.2s ease;
+    touch-action: manipulation;
+}
+
+.map-island:hover {
+    filter: drop-shadow(0 10px 25px rgba(255, 255, 255, 0.4));
+}
+
+.into-btn {
+    position: fixed;
+    bottom: 15vh;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    width: 200px;
+    z-index: 100;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    touch-action: manipulation; /* 平板觸控優化 */
+}
+
+.into-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    filter: brightness(1.1);
+}
+
+.into-btn:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+.difficulty-panel {
+    background: #ffffff;
+    border: 12px solid #b37e56; /* Matches the brown border */
+    border-radius: 40px;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6), inset 0 0 0 8px rgba(0,0,0,0.1);
+    z-index: 20;
+}
+
+.diff-title {
+    color: #000;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.diff-btn {
+    width: 250px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.diff-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.diff-btn:active {
+    transform: scale(0.95);
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 70px; /* Slightly smaller */
+    z-index: 100;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.nav-btn:hover {
+    filter: brightness(1.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav-btn:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+.left-btn {
+    left: 2rem;
+}
+
+.right-btn {
+    right: 2rem;
+}
+
+/* Layer 5: End Screen */
+#layer5 {
+    background-size: cover;
+    background-position: center;
+    background-image: url('pic/sur/end.png');
+}
+
+/* Layer 6: Bad End Screen */
+#layer6 {
+    background-size: cover;
+    background-position: center;
+    background-image: url('pic/sur/endbad.png');
+}
+
+.return-btn {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+}
+
+.return-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    filter: brightness(1.1) drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+}
+
+.return-btn:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
+/* Layer 3 Info Panel (i.png) - fixed top-left */
+.info-panel-wrapper {
+    position: absolute;
+    top: 4vmin;
+    left: 4vmin;
+    width: 28vmin;        /* 隨視窗等比縮放，i.png 約正方形 */
+    z-index: 10000;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+}
+
+.info-panel-img {
+    width: 100%;
+    display: block;
+}
+
+/* ── 三段水庫 bar ── */
+.info-bar-wrapper {
+    position: absolute;
+    top: 10%;         /* 對齊 i.png 橘色 bar 的垂直位置 */
+    left: 8%;
+    width: 84%;
+    height: 11%;      /* 稍微縮小 bar 高度 */
+    display: flex;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.info-bar-silt {
+    background: #7a5c44;   /* 深棕色 — 淤積 */
+    height: 100%;
+    transition: width 0.6s ease;
+}
+
+.info-bar-water {
+    background: #6cc5e8;   /* 天藍色 — 可用水 */
+    height: 100%;
+    transition: width 0.6s ease;
+}
+
+.info-bar-empty {
+    background: #e8a850;   /* 沙色 — 空容量（與 i.png 底色一致） */
+    height: 100%;
+    flex: 1;               /* 自動填滿剩餘空間 */
+    transition: width 0.6s ease;
+}
+
+
+/* v% — 大號百分比，位於橘色bar下方左側 */
+.info-v-pct {
+    position: absolute;
+    top: 27%;
+    left: 10%;
+    font-size: 2.8vmin;
+    font-weight: 900;
+    color: #5a3a1a;
+    line-height: 1;
+}
+
+/* 淤積量數值 — 水庫淤積量那行右側 */
+.info-silt {
+    position: absolute;
+    top: 61%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
+}
+
+/* 月降雨量數值 */
+.info-rain {
+    position: absolute;
+    top: 73%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
+}
+
+/* 月用水量數值 */
+.info-usage {
+    position: absolute;
+    top: 85%;
+    right: 10%;
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #3a2a10;
+}
+
+
+/* ============================================================
+   ★ 事件卡 Overlay
+   ============================================================ */
+
+/* 全螢幕半透明遮罩 */
+#event-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+#event-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 卡片本體 */
+#event-card {
+    background: #fffdf4;
+    border: 6px solid #b37e56;
+    border-radius: 28px;
+    padding: 2rem 2.5rem;
+    max-width: 480px;
+    width: 88vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: card-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes card-pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── 事件圖片 ──
+   在這裡調整大小；位置由 flex 佈局控制（居中）
+   如果要靠左/靠右，改 align-self: flex-start / flex-end */
+.event-img {
+    width: 100%;           /* ← 改這裡調寬度，例如 60% 或 200px */
+    max-height: 220px;     /* ← 改這裡限制最大高度 */
+    object-fit: contain;
+    border-radius: 14px;
+    /* 圖片不存在時不佔位 */
+}
+
+/* 情境問題 */
+.event-question {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #3a2410;
+    text-align: center;
+    line-height: 1.7;
+}
+
+/* 是/否 按鈕區 */
+.event-buttons {
+    display: flex;
+    gap: 2rem;
+}
+
+/* 是/否 圖片按鈕 */
+.event-choice-btn {
+    width: 100px;          /* ← 改這裡調按鈕大小 */
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.event-choice-btn:hover  { transform: scale(1.08); filter: brightness(1.1); }
+.event-choice-btn:active { transform: scale(0.93); }
+
+/* 結果說明文字（選擇後才顯示） */
+.event-result {
+    font-size: 1rem;
+    color: #5a3a1a;
+    text-align: center;
+    line-height: 1.7;
+    max-width: 360px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.event-result.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 繼續按鈕 */
+.event-next-btn {
+    width: 130px;          /* ← 改這裡調大小 */
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.event-next-btn:hover  { transform: scale(1.06); filter: brightness(1.1); }
+.event-next-btn:active { transform: scale(0.94); }
+
+/* ============================================================
+   ★ 事件圖片（放置在場景內，等待點擊）
+   ============================================================ */
+
+.event-scene-img {
+    position: absolute;
+    z-index: 50;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.2s ease;
+    /* top / left / width 由 JS 依每個事件的 imgStyle 個別設定 */
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.45));
+}
+
+.event-scene-img.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 懸停時輕微放大 + 光暈提示可點擊 */
+.event-scene-img:hover {
+    transform: scale(1.07);
+    filter: drop-shadow(0 4px 18px rgba(255,220,80,0.7));
+}
+
+/* ============================================================
+   ★ 左下角對話框
+   ============================================================ */
+
+#dialog-box {
+    position: absolute;
+    bottom: 6vmin;
+    right: 5vmin;
+    width: 42vmin;           /* ← 對話框寬度，可調整 */
+    background: #fffdf4;
+    border: 5px solid #b37e56;
+    border-radius: 22px;
+    padding: 1.4rem 1.6rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    z-index: 9000;
+
+    /* 預設隱藏，滑入動畫 */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#dialog-box.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* 問題文字 */
+.dialog-question {
+    font-size: 1.5vmin;       /* ← 問題字大小 */
+    font-weight: 700;
+    color: #3a2410;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* 是/否 按鈕列 */
+.dialog-buttons {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+}
+
+/* ── 是/否 CSS 繪製按鈕 ── */
+.dialog-choice-btn {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.8vmin;
+    font-weight: 900;
+    padding: 0.6vmin 2.8vmin;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.dialog-choice-yes {
+    background: linear-gradient(135deg, #4ade80, #16a34a);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.45);
+}
+
+.dialog-choice-no {
+    background: linear-gradient(135deg, #f87171, #dc2626);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.45);
+}
+
+.dialog-choice-btn:hover  { transform: scale(1.08); filter: brightness(1.1); }
+.dialog-choice-btn:active { transform: scale(0.93); }
+
+/* 結果文字（選擇後出現） */
+.dialog-result {
+    font-size: 1.3vmin;       /* ← 結果字大小 */
+    color: #5a3a1a;
+    line-height: 1.7;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.dialog-result.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 繼續按鈕（CSS繪製） */
+.dialog-next-btn {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.6vmin;
+    font-weight: 900;
+    padding: 0.6vmin 2.8vmin;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.45);
+    letter-spacing: 2px;
+    align-self: center;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+.dialog-next-btn:hover  { transform: scale(1.07); filter: brightness(1.1); }
+.dialog-next-btn:active { transform: scale(0.93); }
+
+/* ============================================================
+   ★ 左下角颱風提示框
+   ============================================================ */
+
+#typhoon-dialog {
+    position: absolute;
+    bottom: 25vmin;  /* 往上一點，避免蓋住事件對話框 */
+    left: 4vmin;     /* 左側 */
+    width: 32vmin;   /* 稍微小一點 */
+    background: #eef2ff;
+    border: 4px solid #6366f1;
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    z-index: 9000;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#typhoon-dialog.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.typhoon-text {
+    font-size: 1.4vmin;
+    font-weight: 700;
+    color: #1e3a8a;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap; /* 支援換行符號 */
+}
+
+.typhoon-btn-ok {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.4vmin;
+    font-weight: 900;
+    padding: 0.6vmin 2vmin;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: #fff;
+    align-self: center;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+    transition: transform 0.15s ease, filter 0.15s ease;
+    letter-spacing: 2px;
+}
+
+.typhoon-btn-ok:hover { transform: scale(1.08); filter: brightness(1.1); }
+.typhoon-btn-ok:active { transform: scale(0.93); }
+
+/* ============================================================
+   ★ 左上角 +n% / -n% 增減提示 badge
+   ============================================================ */
+
+.info-delta-badge {
+    position: absolute;
+    top: 27%;
+    right: 8%;                  /* 靠右對齊示範圖 */
+    font-size: 2.6vmin;
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.info-delta-badge.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 增加 → 藍色 */
+.info-delta-badge.positive { color: #1e7ab8; }
+
+/* 減少 → 深紅 */
+.info-delta-badge.negative { color: #c0392b; }
+
+/* 月降雨進水 → 青綠色 */
+.info-delta-badge.rain { color: #0e9f6e; }
+
+/* ============================================================
+   ★ 事件圖片 fading 淡出
+   ============================================================ */
+
+.event-scene-img.fading {
+    opacity: 0 !important;
+    transform: scale(0.9) !important;
+    pointer-events: none;
+}
