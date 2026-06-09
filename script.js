@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             scene: 'w1',
-            image: 'pic/man/m1.png',
+            image: 'pic/man/m6.png',
             imgStyle: { width: '120px', top: '55%', left: '60%' },
             question: '有人在釣魚呢，要阻止他嗎？',
             yes:    { text: '釣客被依法取締，水庫並非釣魚場所。',              v: 0, s: 0, vRand: null, sRand: null },
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // ── fo 工廠 ────────────────────────────────────────────
         {
             scene: 'fo',
-            image: 'pic/man/m8.png',
+            image: 'pic/man/m5.png',
             imgStyle: { width: '180px', top: '50%', left: '40%' },
             question: '河面上有很多翻肚的魚，要處理嗎？',
             yes:    { text: '工廠洩漏的污染源已查明並處理。',                  v: 0, s: 0, vRand: [-10,-5], sRand: null },
@@ -100,12 +100,81 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── 難易度設定 ──────────────────────────────────────────────
     // maxPerWindow : 每 30 秒最多同時存在的事件數
     // eventLife    : 事件圖片存在秒數
+    // itemCount    : 開局道具張數
     const DIFFICULTY = {
-        easy:   { maxPerWindow: 2, eventLife: 15 },
-        normal: { maxPerWindow: 3, eventLife: 15 },
-        hard:   { maxPerWindow: 4, eventLife: 15 },
+        easy:   { maxPerWindow: 2, eventLife: 15, itemCount: 3 },
+        normal: { maxPerWindow: 3, eventLife: 15, itemCount: 2 },
+        hard:   { maxPerWindow: 4, eventLife: 15, itemCount: 1 },
     };
     let currentDifficulty = 'normal';
+
+    // ── 道具定義 ────────────────────────────────────────────────
+    const ITEMS_DEF = [
+        {
+            id: 'd1',
+            name: '勸導節水',
+            img: 'pic/item/d1.png',
+            // 條件：可用水量 < 50%
+            canUse: () => gameStats.vPct < 50,
+            // 效果：接下來 3 個月，月用水量 -10~20%
+            apply: (state) => {
+                const pct = randInt(10, 20) / 100;
+                state.usageMultExtra = Math.max(0, (state.usageMultExtra ?? 1) - pct);
+                state.usageDurLeft   = 3;
+                return `勸導節水啟動！\n接下來 3 個月用水量 -${Math.round(pct*100)}%`;
+            },
+        },
+        {
+            id: 'd2',
+            name: '強制限水',
+            img: 'pic/item/d2.png',
+            // 條件：可用水量 < 30%
+            canUse: () => gameStats.vPct < 30,
+            apply: (state) => {
+                state.usageMultExtra = Math.max(0, (state.usageMultExtra ?? 1) - 0.50);
+                state.usageDurLeft   = 1;
+                return `強制限水啟動！\n本月用水量 -50%`;
+            },
+        },
+        {
+            id: 'd3',
+            name: '清淤工程',
+            img: 'pic/item/d3.png',
+            canUse: () => true,
+            apply: (state) => {
+                const pct = randInt(3, 5) / 100;
+                state.siltRedPct    = pct;
+                state.siltDurLeft   = 3;
+                return `清淤工程啟動！\n接下來 3 個月淤積量 -${Math.round(pct*100)}%/月`;
+            },
+        },
+        {
+            id: 'd4',
+            name: '人工降雨',
+            img: 'pic/item/d4.png',
+            canUse: () => true,
+            apply: (state) => {
+                const pct = randInt(5, 10) / 100;
+                state.rainBonus    = pct;
+                state.rainDurLeft  = 1;
+                return `人工降雨啟動！\n本月降雨量 +${Math.round(pct*100)}%`;
+            },
+        },
+    ];
+
+    // ── 道具狀態 ────────────────────────────────────────────────
+    let itemState = {
+        hand: [],           // 手牌：ITEMS_DEF 的 id 陣列（依開局隨機選取）
+        usedThisMonth: false, // 本月已用道具？
+        // active effects
+        usageMultExtra: 1,  // 月用水倍率（道具疊加在 typhoon 倍率上）
+        usageDurLeft:   0,
+        siltRedPct:     0,  // 每月淤積減少 %
+        siltDurLeft:    0,
+        rainBonus:      0,  // 降雨量加成 %
+        rainDurLeft:    0,
+    };
+    let itemToastTimer = null;
     let currentYearType   = 'normal'; // 開局骰出，與難易度無關
 
     // ── 月降雨資料（來源：w.csv，單位 mm）─────────────────────────
@@ -172,7 +241,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const barSilt  = document.getElementById('info-bar-silt');
         const barWater = document.getElementById('info-bar-water');
 
-        if (elPct)   elPct.textContent   = gameStats.vPct + '%';
+        const waterM3 = Math.round((gameStats.vPct / 100) * gameStats.totalCap);
+        if (elPct) elPct.textContent = `${waterM3.toLocaleString()} 萬立方公尺`;
         if (elSilt)  elSilt.textContent  = gameStats.silt.toLocaleString();
         if (elRain)  elRain.textContent  = gameStats.rain;
 
@@ -180,9 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentUsage = Math.round(gameStats.usage * currentTyphoonSupplyMult);
         if (elUsage) elUsage.textContent = currentUsage.toLocaleString();
 
-        const siltPct = (gameStats.silt / gameStats.totalCap) * 100;
+        const siltPct = parseFloat(((gameStats.silt / gameStats.totalCap) * 100).toFixed(2));
         if (barSilt)  barSilt.style.width  = siltPct + '%';
-        if (barWater) barWater.style.width = gameStats.vPct + '%';
+        if (barWater) {
+            barWater.style.width = gameStats.vPct + '%';
+            barWater.style.left  = siltPct + '%'; // 緊接在淤積後面
+        }
     }
 
     // 開局骰年型：乾旱年 30%，正常年 50%，豐水年 20%
@@ -196,13 +269,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function initGameStats() {
         currentYearType = rollYearType();
         const totalCap  = 40000;
+        // 淤積 30~35% of totalCap（萬立方公尺）
+        const silt = Math.round(randInt(30, 35) / 100 * totalCap);
+        const maxVPct = ((totalCap - silt) / totalCap) * 100;
+
         gameStats = {
-            vPct:     randInt(40, 60),
+            vPct:     Math.min(randInt(40, 60), maxVPct), // 開局水量不能超過空餘容量
             totalCap: totalCap,
-            // 淤積 30~35% of totalCap（萬立方公尺）
-            silt:     Math.round(randInt(30, 35) / 100 * totalCap),
+            silt:     silt,
             rain:     randInt(100, 400),
-            usage:    randInt(4000, 6000), // 降低用水量以平衡遊戲體驗
+            usage:    randInt(3000, 5000), // 調低基礎用水量，避免太容易死掉
         };
         currentTyphoonRain = 0;
         currentTyphoonInflowMult = 1;
@@ -226,9 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ds += randInt(choice.sRand[0], choice.sRand[1]);
         }
 
-        dv = parseFloat(dv.toFixed(2));
-        gameStats.vPct = parseFloat((Math.max(0, Math.min(100, gameStats.vPct + dv))).toFixed(2));
         gameStats.silt = Math.max(0, gameStats.silt + ds); // silt 單位為萬立方公尺
+        
+        // 重新計算最大可用水比例 (100% - 淤積%)
+        const maxVPct = ((gameStats.totalCap - gameStats.silt) / gameStats.totalCap) * 100;
+
+        dv = parseFloat(dv.toFixed(2));
+        gameStats.vPct = parseFloat((Math.max(0, Math.min(maxVPct, gameStats.vPct + dv))).toFixed(2));
+        
         updateStatsUI();
 
         // 顯示左上角 +n% / -n% 提示
@@ -369,6 +450,154 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameTimerInterval) { clearInterval(gameTimerInterval); gameTimerInterval = null; }
     }
 
+    // ── 道具牌核心函式 ──────────────────────────────────────────
+
+    function dealItems(difficulty) {
+        const count = DIFFICULTY[difficulty].itemCount;
+        // 隨機打亂 ITEMS_DEF，取前 count 張
+        const shuffled = [...ITEMS_DEF].sort(() => Math.random() - 0.5);
+        itemState.hand = shuffled.slice(0, count).map(d => d.id);
+        itemState.usedThisMonth = false;
+        // 重置所有效果
+        itemState.usageMultExtra = 1;
+        itemState.usageDurLeft   = 0;
+        itemState.siltRedPct     = 0;
+        itemState.siltDurLeft    = 0;
+        itemState.rainBonus      = 0;
+        itemState.rainDurLeft    = 0;
+        renderItemTray();
+        ensureItemToast();
+    }
+
+    function ensureItemToast() {
+        if (!document.getElementById('item-toast')) {
+            const t = document.createElement('div');
+            t.id = 'item-toast';
+            const container = document.getElementById('game-container');
+            if (container) container.appendChild(t);
+        }
+    }
+
+    function showItemToast(msg) {
+        const t = document.getElementById('item-toast');
+        if (!t) return;
+        clearTimeout(itemToastTimer);
+        t.textContent = msg;
+        t.classList.add('show');
+        itemToastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    function renderItemTray() {
+        const tray = document.getElementById('item-tray');
+        if (!tray) return;
+        tray.innerHTML = '';
+
+        itemState.hand.forEach(id => {
+            const def = ITEMS_DEF.find(d => d.id === id);
+            if (!def) return;
+
+            const img = document.createElement('img');
+            img.src = def.img;
+            img.alt = def.name;
+            img.title = def.name;
+            img.dataset.itemId = id;
+            img.className = 'item-card';
+
+            updateCardDisabled(img, def);
+
+            img.addEventListener('click', () => onItemClick(img, def));
+            tray.appendChild(img);
+        });
+    }
+
+    function updateCardDisabled(imgEl, def) {
+        const disabled = itemState.usedThisMonth || !def.canUse();
+        imgEl.classList.toggle('item-disabled', disabled);
+    }
+
+    function refreshItemDisabledStates() {
+        const tray = document.getElementById('item-tray');
+        if (!tray) return;
+        tray.querySelectorAll('.item-card').forEach(imgEl => {
+            const def = ITEMS_DEF.find(d => d.id === imgEl.dataset.itemId);
+            if (def) updateCardDisabled(imgEl, def);
+        });
+    }
+
+    function onItemClick(imgEl, def) {
+        if (itemState.usedThisMonth) {
+            showItemToast('本月已使用道具，下個月才能再用！');
+            return;
+        }
+        if (!def.canUse()) {
+            const hints = {
+                d1: '可用水量需低於 50% 才能使用',
+                d2: '可用水量需低於 30% 才能使用',
+            };
+            showItemToast(hints[def.id] || '目前無法使用此道具');
+            return;
+        }
+
+        // 標記本月已用
+        itemState.usedThisMonth = true;
+
+        // 套用效果
+        const msg = def.apply(itemState);
+
+        // 動畫：使用牌
+        imgEl.classList.add('item-used');
+        setTimeout(() => {
+            // 從 hand 移除
+            itemState.hand = itemState.hand.filter(id => id !== def.id);
+            renderItemTray();
+        }, 480);
+
+        showItemToast(msg);
+        refreshItemDisabledStates();
+    }
+
+    // 每月結算時呼叫（在 applyMonthlyRainfall / applyMonthlyUsage 後）
+    function tickItemEffects() {
+        // 用水倍率 tick
+        if (itemState.usageDurLeft > 0) {
+            itemState.usageDurLeft--;
+            if (itemState.usageDurLeft <= 0) {
+                itemState.usageMultExtra = 1; // 效果結束，恢復
+            }
+        }
+        // 清淤 tick
+        if (itemState.siltDurLeft > 0) {
+            // 本月清淤：減少淤積量
+            const siltRedAbs = gameStats.silt * itemState.siltRedPct;
+            gameStats.silt = Math.max(0, gameStats.silt - siltRedAbs);
+            itemState.siltDurLeft--;
+            if (itemState.siltDurLeft <= 0) {
+                itemState.siltRedPct = 0;
+            }
+        }
+        // 降雨加成 tick（在 rainfall 之後，只做 durLeft 遞減）
+        if (itemState.rainDurLeft > 0) {
+            itemState.rainDurLeft--;
+            if (itemState.rainDurLeft <= 0) {
+                itemState.rainBonus = 0;
+            }
+        }
+        // 月份重置：可再用道具
+        itemState.usedThisMonth = false;
+        refreshItemDisabledStates();
+        updateStatsUI();
+    }
+
+    // 取得本月有效用水倍率（typhoon × item）
+    function getUsageMult() {
+        return currentTyphoonSupplyMult * itemState.usageMultExtra;
+    }
+
+    // 取得本月有效降雨加成倍率
+    function getRainMult() {
+        return 1 + itemState.rainBonus;
+    }
+
     // ── 月降雨進水（每月剩 5 秒時自動觸發）──────────────────────
     function applyMonthlyRainfall() {
         // 算出目前是第幾月（0-indexed）
@@ -376,8 +605,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const yearType = currentYearType;
         const [rMin, rMax] = MONTHLY_RAIN[monthIdx][yearType];
 
-        // Step 1：骰降雨量 mm + 颱風額外降雨
-        const mm = randInt(rMin, rMax) + currentTyphoonRain;
+        // Step 1：骰降雨量 mm + 颱風額外降雨 + 人工降雨加成
+        const baseRain = randInt(rMin, rMax) + currentTyphoonRain;
+        const mm = Math.round(baseRain * getRainMult());
         // Step 2：骰進水效率 50~70%
         const efficiency = randInt(50, 70) / 100;
         // Step 3：換算進水量（萬m³）= mm × 77 × efficiency × 颱風進水折損
@@ -385,17 +615,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Step 4：進水量 / 總容量 × 100 = vPct 增量
         const dv = parseFloat((inflow / gameStats.totalCap * 100).toFixed(1));
 
-        gameStats.vPct = parseFloat((Math.min(100, gameStats.vPct + dv)).toFixed(1));
+        // 最大可用水比例
+        const maxVPct = ((gameStats.totalCap - gameStats.silt) / gameStats.totalCap) * 100;
+        gameStats.vPct = parseFloat((Math.max(0, Math.min(maxVPct, gameStats.vPct + dv))).toFixed(1));
+        
         gameStats.rain = mm;   // 更新面板的月降雨量顯示
         updateStatsUI();
         showRainBadge(dv);     // 專屬青綠色 badge
-        
+
+        // 清淤 & 月份 tick
+        tickItemEffects();
+
         checkGameOver();
     }
 
     // ── 月用水扣除（每月剩 2 秒時自動觸發）──────────────────────
     function applyMonthlyUsage() {
-        const actualUsage = Math.round(gameStats.usage * currentTyphoonSupplyMult);
+        const actualUsage = Math.round(gameStats.usage * getUsageMult());
         const drop = parseFloat((actualUsage / gameStats.totalCap * 100).toFixed(1));
 
         gameStats.vPct = parseFloat((Math.max(0, gameStats.vPct - drop)).toFixed(1));
@@ -420,6 +656,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── 颱風系統 ────────────────────────────────────────────────
     let typhoonDialogTimeout = null;
 
+    // 月底顯示用水量時也更新 UI（getUsageMult 已含 item 效果）
     function showTyphoonDialog(msg) {
         const dialog = document.getElementById('typhoon-dialog');
         const text = document.getElementById('typhoon-text');
@@ -434,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         typhoonDialogTimeout = setTimeout(() => {
             dialog.classList.remove('show');
-        }, 3000);
+        }, 5000); // 延長至 5 秒以便玩家閱讀
 
         btn.onclick = () => {
             clearTimeout(typhoonDialogTimeout);
@@ -447,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTyphoonRain = 0;
         currentTyphoonInflowMult = 1;
         currentTyphoonSupplyMult = 1;
-        gameStats.usage = randInt(4000, 6000); // 用水量調降為 4000~6000 以平衡進水與開局容量
+        gameStats.usage = randInt(3000, 5000); // 重置為較合理的基礎用水量
 
         const monthIdx = Math.max(0, Math.min(11, 11 - Math.floor((timeLeft - 1) / 30)));
         const month = monthIdx + 1; // 1 to 12
@@ -457,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (month === 8) prob = 0.30;
         else if (month === 9) prob = 0.30;
         else if (month === 10) prob = 0.15;
-
+        
         if (Math.random() < prob) {
             const r = Math.random();
             let typeName = "";
@@ -627,9 +864,9 @@ document.addEventListener('DOMContentLoaded', () => {
         activeDialogSlot = slot || null;
 
         const box      = document.getElementById('dialog-box');
-        const evQ      = document.getElementById('dialog-question');
+        const evQ      = document.getElementById('dialog-text');
         const evResult = document.getElementById('dialog-result');
-        const evBtns   = document.getElementById('dialog-buttons');
+        const evBtns   = document.getElementById('dialog-options');
         const btnNext  = document.getElementById('dialog-btn-next');
 
         if (evQ)     evQ.textContent = ev.question;
@@ -727,6 +964,7 @@ document.addEventListener('DOMContentLoaded', () => {
             drawClock(360, 360);
             initGameStats();
             startEventScheduler();
+            dealItems(currentDifficulty);  // ← 開局發道具牌
         });
     });
 
