@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Background Slideshow -->
+    <div id="main-bg-slideshow">
+        <div class="bg-slide active" style="background-image: url('pic/sur/m1.png');"></div>
+        <div class="bg-slide" style="background-image: url('pic/sur/m2.png');"></div>
+    </div>
+
+    <!-- Layer 1: Title Screen -->
+    <div id="layer1" class="screen active">
+        <img src="pic/item/start.png" id="btn-start" alt="Start Game" class="image-btn">
+    </div>
+
+    <!-- Layer 2: Level Selection Screen -->
+    <div id="layer2" class="screen">
+        <img src="pic/item/turnback.png" id="btn-back-to-title" alt="Back" class="back-btn">
+        <img src="pic/item/T.png" id="map-island" alt="Taiwan Map" class="map-island">
+        <img src="pic/item/into.png" id="btn-into" alt="Into" class="into-btn" style="display: none;">
+    </div>
+
+    <!-- Layer 4: Difficulty Selection Screen -->
+    <div id="layer4" class="screen">
+        <img src="pic/item/turnback.png" id="btn-back-to-layer2" alt="Back" class="back-btn">
+        <div class="difficulty-panel">
+            <h2 class="diff-title">難易度</h2>
+            <img src="pic/item/easy.png" id="btn-easy" class="diff-btn" alt="Easy">
+            <img src="pic/item/normal.png" id="btn-normal" class="diff-btn" alt="Normal">
+            <img src="pic/item/hard.png" id="btn-hard" class="diff-btn" alt="Hard">
+        </div>
+    </div>
+
+    <!-- Layer 3: Game Screen -->
+    <div id="layer3" class="screen">
+        <div class="frame-overlay"></div>
+        <div class="info-panel-wrapper">
+            <img src="pic/item/i.png" class="info-panel-img" alt="Info">
+            <div class="info-bar-wrapper">
+                <div class="info-bar-silt"  id="info-bar-silt"></div>
+                <div class="info-bar-water" id="info-bar-water"></div>
+                <div class="info-bar-empty" id="info-bar-empty"></div>
+            </div>
+            <div class="info-v-pct" id="info-v-pct">--%</div>
+            <!-- ★ 增減提示 badge，例如 +5% / -12% -->
+            <div class="info-delta-badge" id="info-delta-badge"></div>
+            <div class="info-silt" id="info-silt">--</div>
+            <div class="info-rain" id="info-rain">--</div>
+            <div class="info-usage" id="info-usage">--</div>
+        </div>
+        <div id="game-container">
+            <img id="game-bg" src="pic/place/w1.png" alt="Game Background">
+
+            <img src="pic/item/l.png" id="btn-left" class="nav-btn left-btn" alt="Left">
+            <img src="pic/item/r.png" id="btn-right" class="nav-btn right-btn" alt="Right">
+
+            <div class="time-container">
+                <canvas id="clock-canvas" class="clock-canvas" width="80" height="80"></canvas>
+                <img src="pic/item/time.png" class="time-bg" alt="Time Background">
+                <div class="time-text-wrapper">
+                    <div id="game-month">一月</div>
+                    <div id="game-timer">6:00</div>
+                </div>
+            </div>
+
+            <!-- ★ 道具牌欄 -->
+            <div id="item-tray"></div>
+
+            <!-- ★ 左下角對話框 (事件發生與結果) -->
+            <div id="dialog-box">
+                <!-- 📍 這是事件發生時的「主要文字內容」 -->
+                <p id="dialog-text" class="dialog-text"></p>
+
+                <!-- 📍 這是事件的「是 / 否 選項按鈕區塊」 -->
+                <div id="dialog-options" class="dialog-buttons" style="display:none;">
+                    <button id="dialog-btn-yes" class="dialog-choice-btn dialog-choice-yes">是</button>
+                    <button id="dialog-btn-no" class="dialog-choice-btn dialog-choice-no">否</button>
+                </div>
+
+                <!-- 📍 這是玩家點擊選項後，顯示的「結果文字內容」 -->
+                <p id="dialog-result" class="dialog-result"></p>
+
+                <!-- 📍 這是看完結果後的「確認按鈕」（原本是圖片，現在改為按鈕） -->
+                <button id="dialog-btn-next" class="dialog-next-btn" style="display:none;">確認</button>
+            </div>
+
+            <!-- ★ 左下角颱風提示框 -->
+            <div id="typhoon-dialog" class="typhoon-dialog">
+                <!-- 📍 這是颱風發生時的「文字內容」 -->
+                <p id="typhoon-text" class="typhoon-text"></p>
+                <!-- 📍 這是颱風提示框的「確認按鈕」 -->
+                <button id="typhoon-btn-ok" class="typhoon-btn-ok">確認</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Layer 5: End Screen -->
+    <div id="layer5" class="screen">
+        <img src="pic/item/return.png" id="btn-return" alt="Return" class="return-btn">
+    </div>
+
+    <!-- Layer 6: Bad End Screen (Game Over) -->
+    <div id="layer6" class="screen">
+        <img src="pic/item/return.png" id="btn-return-bad" alt="Return" class="return-btn">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
