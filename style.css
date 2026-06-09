@@ -245,15 +245,15 @@ h2 {
     height: 100%;
     pointer-events: none; /* Let clicks pass through to game UI */
     z-index: 9999; /* Ensure it stays above everything else in Layer 3 */
-    border: 8vmin solid transparent; /* Responsive frame thickness, increased */
+    border: 10vmin solid transparent; /* Responsive frame thickness, increased */
     border-image: url('pic/item/bb.png') 15% stretch;
 }
 
 .time-container {
     position: absolute;
     top: 4vmin;
-    right: -1vmin;        /* 稍微往右 */
-    width: 30vmin;        /* 隨視窗縮放 */
+    right: 3vmin;        /* 稍微往右 */
+    width: 25vmin;        /* 隨視窗縮放 */
     z-index: 100;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
     display: flex;
@@ -263,8 +263,8 @@ h2 {
 
 .clock-canvas {
     position: absolute;
-    left: 2.2vmin;
-    top: 50%;
+    left: 4.5vmin;
+    top: 48%;
     transform: translateY(-50%);
     width: 7vmin;         /* 隨視窗縮放 */
     height: 7vmin;
@@ -296,6 +296,36 @@ h2 {
     line-height: 1;
     margin-bottom: 0.2rem;
     letter-spacing: 1px;
+}
+
+.info-bar {
+    width: 100%;
+    height: 4vmin;      /* 原本 3vmin */
+    background: #e6c280; /* 沙色，代表水庫總容量的底色 */
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2vmin;
+}
+
+.info-bar-silt {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: #6b4423; /* 淤積：深棕色 */
+    width: 0%;
+    z-index: 1;
+}
+
+.info-bar-water {
+    position: absolute;
+    top: 0; 
+    /* left 會由 JS 動態設定，接在淤積右邊 */
+    height: 100%;
+    background: #3b82f6; /* 水量：亮藍色 */
+    width: 0%;
+    z-index: 2;
 }
 
 #game-timer {
@@ -370,7 +400,7 @@ h2 {
     top: 2rem;
     left: 2rem;
     cursor: pointer;
-    width: 150px;
+    width: 120px;
     transition: transform 0.2s ease, filter 0.2s ease;
     z-index: 9999;
     touch-action: manipulation;
@@ -415,7 +445,7 @@ h2 {
 .into-btn {
     position: fixed;
     bottom: 15vh;
-    left: 50%;
+    left: 90%;
     transform: translateX(-50%);
     cursor: pointer;
     width: 200px;
@@ -474,7 +504,7 @@ h2 {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    width: 70px; /* Slightly smaller */
+    width: 50px; /* 進一步縮小按鈕 */
     z-index: 100;
     transition: transform 0.2s ease, filter 0.2s ease;
 }
@@ -536,7 +566,7 @@ h2 {
     position: absolute;
     top: 4vmin;
     left: 4vmin;
-    width: 28vmin;        /* 隨視窗等比縮放，i.png 約正方形 */
+    width: 38vmin;        /* 原本 28vmin，放大以容納更多文字 */
     z-index: 10000;
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
 }
@@ -549,10 +579,10 @@ h2 {
 /* ── 三段水庫 bar ── */
 .info-bar-wrapper {
     position: absolute;
-    top: 10%;         /* 對齊 i.png 橘色 bar 的垂直位置 */
-    left: 8%;
-    width: 84%;
-    height: 11%;      /* 稍微縮小 bar 高度 */
+    top: 15%;         /* 對齊 i.png 橘色 bar 的垂直位置 */
+    left: 14%;
+    width: 72%;
+    height: 10%;      /* 稍微縮小 bar 高度 */
     display: flex;
     border-radius: 50px;
     overflow: hidden;
@@ -577,13 +607,12 @@ h2 {
     transition: width 0.6s ease;
 }
 
-
 /* v% — 大號百分比，位於橘色bar下方左側 */
 .info-v-pct {
     position: absolute;
-    top: 27%;
-    left: 10%;
-    font-size: 2.8vmin;
+    top: 30%;
+    left: 35%;
+    font-size: 2vmin; /* 調整大小以塞下"萬立方公尺"與百分比 */
     font-weight: 900;
     color: #5a3a1a;
     line-height: 1;
@@ -592,9 +621,9 @@ h2 {
 /* 淤積量數值 — 水庫淤積量那行右側 */
 .info-silt {
     position: absolute;
-    top: 61%;
-    right: 10%;
-    font-size: 1.4vmin;
+    top: 60%;
+    left: 53%;
+    font-size: 1.6vmin;
     font-weight: 700;
     color: #3a2a10;
 }
@@ -602,9 +631,9 @@ h2 {
 /* 月降雨量數值 */
 .info-rain {
     position: absolute;
-    top: 73%;
-    right: 10%;
-    font-size: 1.4vmin;
+    top: 68%;
+    left: 70%;
+    font-size: 1.6vmin;
     font-weight: 700;
     color: #3a2a10;
 }
@@ -612,9 +641,9 @@ h2 {
 /* 月用水量數值 */
 .info-usage {
     position: absolute;
-    top: 85%;
-    right: 10%;
-    font-size: 1.4vmin;
+    top: 76%;
+    left: 53%;
+    font-size: 1.6vmin;
     font-weight: 700;
     color: #3a2a10;
 }
@@ -801,7 +830,18 @@ h2 {
     justify-content: center;
 }
 
-/* ── 是/否 CSS 繪製按鈕 ── */
+/* ============================================================
+   ★ 事件對話框相關樣式 (事件主要文字)
+   ============================================================ */
+.dialog-text {
+    font-size: 1.8vmin;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+    color: #4a3b32;
+}
+
+/* ── 📍 事件「是/否」按鈕外觀 ── */
 .dialog-choice-btn {
     font-family: 'Noto Sans TC', sans-serif;
     font-size: 1.8vmin;
@@ -829,9 +869,9 @@ h2 {
 .dialog-choice-btn:hover  { transform: scale(1.08); filter: brightness(1.1); }
 .dialog-choice-btn:active { transform: scale(0.93); }
 
-/* 結果文字（選擇後出現） */
+/* 📍 事件結果文字（選擇後出現） */
 .dialog-result {
-    font-size: 1.3vmin;       /* ← 結果字大小 */
+    font-size: 1.3vmin;
     color: #5a3a1a;
     line-height: 1.7;
     margin: 0;
@@ -839,6 +879,7 @@ h2 {
     transform: translateY(5px);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
 .dialog-result.show {
     opacity: 1;
     transform: translateY(0);
@@ -864,13 +905,13 @@ h2 {
 .dialog-next-btn:active { transform: scale(0.93); }
 
 /* ============================================================
-   ★ 左下角颱風提示框
+   ★ 颱風提示框相關樣式
    ============================================================ */
 
 #typhoon-dialog {
     position: absolute;
-    bottom: 25vmin;  /* 往上一點，避免蓋住事件對話框 */
-    left: 4vmin;     /* 左側 */
+    bottom: 35vmin;  /* 位於事件對話框上方 */
+    right: 5vmin;    /* 移至右側，與事件對話框對齊 */
     width: 32vmin;   /* 稍微小一點 */
     background: #eef2ff;
     border: 4px solid #6366f1;
@@ -894,6 +935,7 @@ h2 {
     transform: translateY(0);
 }
 
+/* 📍 颱風文字外觀 */
 .typhoon-text {
     font-size: 1.4vmin;
     font-weight: 700;
@@ -903,6 +945,7 @@ h2 {
     white-space: pre-wrap; /* 支援換行符號 */
 }
 
+/* 📍 颱風確認按鈕外觀 */
 .typhoon-btn-ok {
     font-family: 'Noto Sans TC', sans-serif;
     font-size: 1.4vmin;
@@ -928,9 +971,9 @@ h2 {
 
 .info-delta-badge {
     position: absolute;
-    top: 27%;
-    right: 8%;                  /* 靠右對齊示範圖 */
-    font-size: 2.6vmin;
+    top: 38%;
+    left: 66%;                  /* 靠右對齊示範圖 */
+    font-size: 2.2vmin;
     font-weight: 900;
     line-height: 1;
     pointer-events: none;
@@ -961,4 +1004,94 @@ h2 {
     opacity: 0 !important;
     transform: scale(0.9) !important;
     pointer-events: none;
+}
+
+/* ============================================================
+   ★ 道具牌欄
+   ============================================================ */
+
+#item-tray {
+    position: absolute;
+    bottom: 6vmin;
+    left: 5vmin;
+    display: flex;
+    flex-direction: row;
+    gap: 1.2vmin;
+    z-index: 9100;
+    align-items: flex-end;
+}
+
+/* 單張道具牌 */
+.item-card {
+    width: 15vmin;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    transform-origin: bottom center;
+    /* 開場牌動畫：從下滑入 */
+    animation: card-deal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* 依序延遲滑入 */
+.item-card:nth-child(1) { animation-delay: 0.05s; }
+.item-card:nth-child(2) { animation-delay: 0.15s; }
+.item-card:nth-child(3) { animation-delay: 0.25s; }
+
+@keyframes card-deal {
+    from { opacity: 0; transform: translateY(40px) scale(0.8); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* 可使用：hover 放大 */
+.item-card:not(.item-disabled):hover {
+    transform: translateY(-6px) scale(1.12);
+    filter: drop-shadow(0 8px 18px rgba(255,220,80,0.65));
+}
+
+/* 不可使用（條件不符或本月已用） */
+.item-card.item-disabled {
+    filter: grayscale(90%) brightness(0.55) drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* 使用動畫：翻轉淡出 */
+.item-card.item-used {
+    animation: card-use 0.45s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes card-use {
+    0%   { transform: scale(1) rotateY(0deg);    opacity: 1; }
+    40%  { transform: scale(1.1) rotateY(90deg); opacity: 0.6; }
+    100% { transform: scale(0.6) rotateY(180deg); opacity: 0; }
+}
+
+/* ── 道具使用提示 Toast ── */
+#item-toast {
+    position: absolute;
+    bottom: 20vmin;
+    left: 5vmin;
+    background: rgba(20, 20, 40, 0.88);
+    color: #fde68a;
+    font-size: 1.5vmin;
+    font-weight: 700;
+    padding: 0.7vmin 1.6vmin;
+    border-radius: 20px;
+    border: 1px solid rgba(253,230,138,0.35);
+    backdrop-filter: blur(6px);
+    z-index: 9200;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: pre-wrap;
+    max-width: 28vmin;
+    line-height: 1.6;
+}
+
+#item-toast.show {
+    opacity: 1;
+    transform: translateY(0);
 }
