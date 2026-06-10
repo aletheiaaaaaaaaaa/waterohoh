@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'w1',
             image: 'pic/man/m2.png',
-            imgStyle: { width: '160px', top: '45%', left: '30%' },
+            imgStyle: { width: '160px', top: '50%', left: '20%' },
             question: '這個人在開挖土機在幹嘛呢？要阻止他嗎？',
             yes:    { text: '工人覺得有點疑惑還是收工了，清淤工程已停止。',   v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '原來是在進行清理水庫淤泥的工程，工程繼續。',     v: 0, s: 0, vRand: null, sRand: [-8,-3] },
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'w1',
             image: 'pic/man/m3.png',
-            imgStyle: { width: '200px', top: '30%', left: '55%' },
+            imgStyle: { width: '100px', top: '17%', left: '60%' },
             question: '水表面有一大塊綠色的東西在漂，要處理嗎？',
             yes:    { text: '原來是藻類，啟動除藻，水質維持正常。',            v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '藻華大量繁殖，水庫優養化，部分水源無法使用。',    v: 0, s: 0, vRand: [-30,-15], sRand: [3,6] },
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             scene: 'w1',
-            image: 'pic/man/m6.png',
-            imgStyle: { width: '120px', top: '55%', left: '60%' },
+            image: 'pic/man/m1.png',
+            imgStyle: { width: '60px', top: '13%', left: '50%' },
             question: '有人在釣魚呢，要阻止他嗎？',
             yes:    { text: '釣客被依法取締，水庫並非釣魚場所。',              v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '釣客繼續釣魚，魚餌、鉛錘沉入水底污染水質。',      v: 0, s: 0, vRand: [-3,-1], sRand: null },
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'fo',
             image: 'pic/man/m5.png',
-            imgStyle: { width: '180px', top: '50%', left: '40%' },
+            imgStyle: { width: '150px', top: '65%', left: '40%' },
             question: '河面上有很多翻肚的魚，要處理嗎？',
             yes:    { text: '工廠洩漏的污染源已查明並處理。',                  v: 0, s: 0, vRand: [-10,-5], sRand: null },
             no:     { text: '污染持續擴散，大範圍水源受影響。',                v: 0, s: 0, vRand: [-50,-25], sRand: [5,10] },
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'fo',
             image: 'pic/man/m4.png',
-            imgStyle: { width: '140px', top: '60%', left: '50%' },
+            imgStyle: { width: '60px', top: '65%', left: '80%' },
             question: '有幾個看著冒出奇怪液體的桶，要處理嗎？',
             yes:    { text: '確認是違法棄置有毒廢液，妥善清除。',              v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '桶子腐蝕後液體滲入土壤與地下水。',               v: 0, s: 0, vRand: [-18,-8], sRand: null },
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 't1',
             image: 'pic/man/m6.png',
-            imgStyle: { width: '150px', top: '55%', left: '35%' },
+            imgStyle: { width: '230px', top: '55%', left: '20%' },
             question: '有人在水渠用水管往田裡接水，要阻止他嗎？',
             yes:    { text: '確認是盜引灌溉水，制止了違規行為。',              v: 0, s: 0, vRand: [-5,-2], sRand: null },
             no:     { text: '非法抽水沒被阻止，被抽得更多了。',               v: 0, s: 0, vRand: [-12,-5], sRand: null },
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 't1',
             image: 'pic/man/m7.png',
-            imgStyle: { width: '130px', top: '65%', left: '45%' },
+            imgStyle: { width: '130px', top: '65%', left: '42%' },
             question: '有一空桶子被丟在溝渠旁，要處理嗎？',
             yes:    { text: '確認是農藥空桶違法棄置，妥善清運並未污染。',      v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '殘留農藥隨雨水滲漏進水渠與土地中。',             v: 0, s: 0, vRand: [-10,-4], sRand: null },
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 's1',
             image: 'pic/man/m8.png',
-            imgStyle: { width: '110px', top: '50%', left: '55%' },
+            imgStyle: { width: '60px', top: '75%', left: '45%' },
             question: '街道上有個消防栓一直在流出水呢，要處理嗎？',
             yes:    { text: '確認消防栓未確實關閉，已做處理。',                v: 0, s: 0, vRand: [-3,-1], sRand: null },
             no:     { text: '持續漏水，大量乾淨水源白白流失。',               v: 0, s: 0, vRand: [-12,-5], sRand: [2,4] },
@@ -232,6 +232,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTyphoonRain = 0;
     let currentTyphoonInflowMult = 1;
     let currentTyphoonSupplyMult = 1;
+    let currentMonthRainMm = 0;
+    let currentMonthRainDv = 0;
+
+    // ── 動態背景圖片 ──────────────────────────────────────────────
+    function updateGameBackground() {
+        if (!gameBg) return;
+        let bgName = backgrounds[currentBgIndex];
+        
+        // 判斷是否需要切換 w1/w2 圖片
+        if (bgName === 'w1' && gameStats && gameStats.totalCap) {
+            const a = gameStats.totalCap - gameStats.silt;
+            const waterVol = (gameStats.vPct / 100) * gameStats.totalCap;
+            if (waterVol <= a * 0.5) {
+                bgName = 'w2';
+            }
+        }
+        
+        gameBg.src = `pic/place/${bgName}.png`;
+    }
 
     function updateStatsUI() {
         const elPct    = document.getElementById('info-v-pct');
@@ -277,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             vPct:     Math.min(randInt(40, 60), maxVPct), // 開局水量不能超過空餘容量
             totalCap: totalCap,
             silt:     silt,
-            rain:     randInt(100, 400),
+            rain:     0,
             usage:    randInt(3000, 5000), // 調低基礎用水量，避免太容易死掉
         };
         currentTyphoonRain = 0;
@@ -324,7 +343,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkGameOver() {
         if (!gameStats || !gameStats.totalCap) return;
         const waterVol = (gameStats.vPct / 100) * gameStats.totalCap;
-        if (waterVol <= gameStats.silt) {
+        const a = gameStats.totalCap - gameStats.silt;
+        
+        // 新增動態背景檢查：當 a 的 50% 大於等於可用水，且在第一張場景，就替換為 w2
+        updateGameBackground();
+
+        // 遊戲失敗條件：總容量減去淤積量(a)的 10% 大於等於可用水量
+        if (waterVol <= a * 0.1) {
             stopGameTimer(); 
             stopEventScheduler(); 
             clearAllEventImages();
@@ -432,9 +457,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 checkTyphoon();
             }
 
-            // 每月剩 5 秒時，自動套用當月降雨進水量
+            // 每月剩 15 秒時，自動套用前半個月降雨進水量
+            if (timeLeft > 0 && timeLeft % 30 === 15) {
+                applyHalfRainfall(true);
+            }
+
+            // 每月剩 5 秒時，自動套用後半個月降雨進水量
             if (timeLeft > 0 && timeLeft % 30 === 5) {
-                applyMonthlyRainfall();
+                applyHalfRainfall(false);
             }
 
             // 每月剩 2 秒時，扣除當月民生用水
@@ -569,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (itemState.siltDurLeft > 0) {
             // 本月清淤：減少淤積量
             const siltRedAbs = gameStats.silt * itemState.siltRedPct;
-            gameStats.silt = Math.max(0, gameStats.silt - siltRedAbs);
+            gameStats.silt = Math.max(0, Math.round(gameStats.silt - siltRedAbs));
             itemState.siltDurLeft--;
             if (itemState.siltDurLeft <= 0) {
                 itemState.siltRedPct = 0;
@@ -598,33 +628,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return 1 + itemState.rainBonus;
     }
 
-    // ── 月降雨進水（每月剩 5 秒時自動觸發）──────────────────────
-    function applyMonthlyRainfall() {
-        // 算出目前是第幾月（0-indexed）
-        const monthIdx = Math.max(0, Math.min(11, 11 - Math.floor((timeLeft - 1) / 30)));
-        const yearType = currentYearType;
-        const [rMin, rMax] = MONTHLY_RAIN[monthIdx][yearType];
-
-        // Step 1：骰降雨量 mm + 颱風額外降雨 + 人工降雨加成
-        const baseRain = randInt(rMin, rMax) + currentTyphoonRain;
-        const mm = Math.round(baseRain * getRainMult());
-        // Step 2：骰進水效率 50~70%
-        const efficiency = randInt(50, 70) / 100;
-        // Step 3：換算進水量（萬m³）= mm × 77 × efficiency × 颱風進水折損
-        const inflow = mm * 77 * efficiency * currentTyphoonInflowMult;
-        // Step 4：進水量 / 總容量 × 100 = vPct 增量
-        const dv = parseFloat((inflow / gameStats.totalCap * 100).toFixed(1));
+    // ── 月降雨進水（分兩次套用）──────────────────────
+    function applyHalfRainfall(isFirstHalf) {
+        const halfDv = isFirstHalf ? parseFloat((currentMonthRainDv / 2).toFixed(1)) : parseFloat((currentMonthRainDv - parseFloat((currentMonthRainDv / 2).toFixed(1))).toFixed(1));
+        const halfMm = isFirstHalf ? Math.floor(currentMonthRainMm / 2) : currentMonthRainMm - Math.floor(currentMonthRainMm / 2);
 
         // 最大可用水比例
         const maxVPct = ((gameStats.totalCap - gameStats.silt) / gameStats.totalCap) * 100;
-        gameStats.vPct = parseFloat((Math.max(0, Math.min(maxVPct, gameStats.vPct + dv))).toFixed(1));
+        gameStats.vPct = parseFloat((Math.max(0, Math.min(maxVPct, gameStats.vPct + halfDv))).toFixed(1));
         
-        gameStats.rain = mm;   // 更新面板的月降雨量顯示
+        gameStats.rain += halfMm;   // 累加當月顯示的降雨量
         updateStatsUI();
-        showRainBadge(dv);     // 專屬青綠色 badge
+        showRainBadge(halfDv);      // 專屬青綠色 badge
 
-        // 清淤 & 月份 tick
-        tickItemEffects();
+        // 只有在月底（第二次降雨時）才結算道具效果
+        if (!isFirstHalf) {
+            tickItemEffects();
+        }
 
         checkGameOver();
     }
@@ -722,6 +742,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             showTyphoonDialog(msg);
         }
+
+        // 預先計算本月的總降雨與進水，儲存起來分兩次發放
+        const [rMin, rMax] = MONTHLY_RAIN[monthIdx][currentYearType];
+        const baseRain = randInt(rMin, rMax) + currentTyphoonRain;
+        currentMonthRainMm = Math.round(baseRain * getRainMult());
+        const efficiency = randInt(50, 70) / 100;
+        const inflow = currentMonthRainMm * 77 * efficiency * currentTyphoonInflowMult;
+        currentMonthRainDv = parseFloat((inflow / gameStats.totalCap * 100).toFixed(1));
+        
+        gameStats.rain = 0; // 新月份開始，重置顯示的累積降雨量
 
         updateStatsUI(); // 更新 usage 顯示
     }
@@ -855,10 +885,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeDialogSlot = null;  // 目前對話框對應的 slot（未作答狀態）
 
     function openDialogBox(ev, imgEl, slot) {
-        // 圖片先隱藏（但不移除，切場景可復活）
+        // 點擊圖片時不隱藏圖片，讓玩家在回答問題時還能看到事件主角
+        // 加上一點特效表示正在互動
         if (imgEl) {
-            imgEl.classList.remove('visible');
-            imgEl.classList.add('fading');
+            imgEl.style.filter = 'drop-shadow(0 4px 18px rgba(255,220,80,0.9))';
+            imgEl.style.transform = 'scale(1.05)';
         }
 
         activeDialogSlot = slot || null;
@@ -888,12 +919,22 @@ document.addEventListener('DOMContentLoaded', () => {
         box.classList.add('show');
 
         function choose(choice) {
+            // 已經作答，取消原本的 15 秒超時懲罰計時器
+            if (slot && slot.timeoutId) {
+                clearTimeout(slot.timeoutId);
+            }
             activeDialogSlot = null;  // 已作答，解除追蹤
 
             const { dv, ds } = applyStatDelta(choice);
 
-            // 圖片現在才真正移除
-            if (imgEl) setTimeout(() => imgEl.remove(), 400);
+            // 圖片現在才真正隱藏並移除
+            if (imgEl) {
+                imgEl.style.filter = '';
+                imgEl.style.transform = '';
+                imgEl.classList.remove('visible');
+                imgEl.classList.add('fading');
+                setTimeout(() => imgEl.remove(), 400);
+            }
 
             let extra = '';
             if (dv !== 0) extra += ` 水量 ${dv > 0 ? '+' : ''}${dv}%`;
@@ -923,6 +964,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeDialogBox() {
         const box = document.getElementById('dialog-box');
         if (box) box.classList.remove('show');
+        
+        // 確保選項按鈕和下一個按鈕立刻隱藏，防止任何意外被點擊
+        const evBtns = document.getElementById('dialog-options');
+        if (evBtns) evBtns.style.display = 'none';
+        const btnNext = document.getElementById('dialog-btn-next');
+        if (btnNext) btnNext.style.display = 'none';
+
         activeDialogSlot = null;
     }
 
@@ -957,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
     diffBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             currentDifficulty = btn.id.replace('btn-', '');  // 'btn-easy' → 'easy'
-            if (gameBg) { currentBgIndex = 0; gameBg.src = `pic/place/${backgrounds[0]}.png`; }
+            if (gameBg) { currentBgIndex = 0; updateGameBackground(); }
             usedEvents = [];
             showScreen(layer3);
             startGameTimer();
@@ -974,14 +1022,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnRight) {
         btnRight.addEventListener('click', () => {
             currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
-            if (gameBg) gameBg.src = `pic/place/${backgrounds[currentBgIndex]}.png`;
+            updateGameBackground();
             updateEventVisibility();
         });
     }
     if (btnLeft) {
         btnLeft.addEventListener('click', () => {
             currentBgIndex = (currentBgIndex - 1 + backgrounds.length) % backgrounds.length;
-            if (gameBg) gameBg.src = `pic/place/${backgrounds[currentBgIndex]}.png`;
+            updateGameBackground();
             updateEventVisibility();
         });
     }
@@ -990,11 +1038,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateEventVisibility() {
         const sceneName = backgrounds[currentBgIndex];
 
-        // 若對話框開著且未作答，關閉它並讓圖片復活（玩家需重新點擊）
+        // 若對話框開著且未作答，關閉它並讓圖片恢復原狀（玩家需重新點擊）
         if (activeDialogSlot) {
             closeDialogBox();
             const ri = activeDialogSlot.imgEl;
-            ri.classList.remove('fading');
+            ri.style.filter = '';
+            ri.style.transform = '';
             // 復活：若屬於新場景就顯示，否則先隱藏
             if (activeDialogSlot.scene === sceneName) {
                 ri.style.visibility = 'visible';
