@@ -424,10 +424,10 @@ h2 {
 
 .map-island {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -35%);
-    height: 100vh;
+    height: 95vh;
     width: auto;
     max-width: none;
     object-fit: contain;
@@ -445,7 +445,7 @@ h2 {
 .into-btn {
     position: fixed;
     bottom: 15vh;
-    left: 90%;
+    left: 85%;
     transform: translateX(-50%);
     cursor: pointer;
     width: 200px;
@@ -834,9 +834,9 @@ h2 {
    ★ 事件對話框相關樣式 (事件主要文字)
    ============================================================ */
 .dialog-text {
-    font-size: 1.8vmin;
+    font-size: 2vmin;
     line-height: 1.5;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
     font-weight: 700;
     color: #4a3b32;
 }
@@ -871,7 +871,7 @@ h2 {
 
 /* 📍 事件結果文字（選擇後出現） */
 .dialog-result {
-    font-size: 1.3vmin;
+    font-size: 1.8vmin;
     color: #5a3a1a;
     line-height: 1.7;
     margin: 0;
@@ -972,7 +972,7 @@ h2 {
 .info-delta-badge {
     position: absolute;
     top: 38%;
-    left: 66%;                  /* 靠右對齊示範圖 */
+    left: 61%;                  /* 靠右對齊示範圖 */
     font-size: 2.2vmin;
     font-weight: 900;
     line-height: 1;
