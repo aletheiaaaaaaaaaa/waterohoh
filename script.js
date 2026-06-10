@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'w1',
             image: 'pic/man/m3.png',
-            imgStyle: { width: '100px', top: '17%', left: '60%' },
+            imgStyle: { width: '100px', top: '25%', left: '60%' },
             question: '水表面有一大塊綠色的東西在漂，要處理嗎？',
             yes:    { text: '原來是藻類，啟動除藻，水質維持正常。',            v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '藻華大量繁殖，水庫優養化，部分水源無法使用。',    v: 0, s: 0, vRand: [-30,-15], sRand: [3,6] },
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'w1',
             image: 'pic/man/m1.png',
-            imgStyle: { width: '60px', top: '13%', left: '50%' },
+            imgStyle: { width: '60px', top: '19%', left: '50%' },
             question: '有人在釣魚呢，要阻止他嗎？',
             yes:    { text: '釣客被依法取締，水庫並非釣魚場所。',              v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '釣客繼續釣魚，魚餌、鉛錘沉入水底污染水質。',      v: 0, s: 0, vRand: [-3,-1], sRand: null },
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 'fo',
             image: 'pic/man/m4.png',
-            imgStyle: { width: '60px', top: '65%', left: '80%' },
+            imgStyle: { width: '60px', top: '62%', left: '84%' },
             question: '有幾個看著冒出奇怪液體的桶，要處理嗎？',
             yes:    { text: '確認是違法棄置有毒廢液，妥善清除。',              v: 0, s: 0, vRand: null, sRand: null },
             no:     { text: '桶子腐蝕後液體滲入土壤與地下水。',               v: 0, s: 0, vRand: [-18,-8], sRand: null },
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             scene: 's1',
             image: 'pic/man/m8.png',
-            imgStyle: { width: '60px', top: '75%', left: '45%' },
+            imgStyle: { width: '60px', top: '72%', left: '45%' },
             question: '街道上有個消防栓一直在流出水呢，要處理嗎？',
             yes:    { text: '確認消防栓未確實關閉，已做處理。',                v: 0, s: 0, vRand: [-3,-1], sRand: null },
             no:     { text: '持續漏水，大量乾淨水源白白流失。',               v: 0, s: 0, vRand: [-12,-5], sRand: [2,4] },
