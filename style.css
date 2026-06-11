@@ -424,10 +424,10 @@ h2 {
 
 .map-island {
     position: absolute;
-    top: 10%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -35%);
-    height: 95vh;
+    height: 90vh;
     width: auto;
     max-width: none;
     object-fit: contain;
